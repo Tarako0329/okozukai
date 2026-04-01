@@ -1,0 +1,17 @@
+<?php
+declare(strict_types=1);
+
+use $useClassName;
+
+class $className extends $baseClassName
+{
+    public function up(): void
+    {
+        // ここにSQLを書く（例：$this->execute("CREATE TABLE ...");）
+    }
+
+    public function down(): void
+    {
+        // ここに元に戻すSQLを書く
+    }
+}

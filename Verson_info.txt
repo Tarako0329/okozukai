@@ -1,0 +1,38 @@
+ver0.00.0:MyFirstCommit
+
+
+
+【Issues】
+
+【完了】
+
+マイグレーションコマンド
+#マイグレーションファイルを作る
+php vendor/bin/phinx create [
+    テーブルを作る時: CreateUsersTable
+    テーブルを削除: DropUsersTable
+    カラムを追加する時: AddStatusToUsers
+    カラムを削除する時: RemoveUnusedColumnFromOrders
+    カラム名を変更する時: RenameOldNameInUsers
+    ]
+# 一つ前の状態に戻す（downメソッドが実行される）
+php vendor/bin/phinx rollback
+
+# 履歴確認
+php vendor/bin/phinx status
+
+
+ローカルからテスト環境へ
+cd /home/pcntfsrg/public_html/training_test
+git fetch --all
+git reset --hard origin/master
+#DBマイグレーション
+php vendor/bin/phinx migrate
+
+
+ローカルから本番環境へ
+cd /home/pcntfsrg/public_html/training
+git fetch --all
+git reset --hard origin/master
+#DBマイグレーション
+php vendor/bin/phinx migrate

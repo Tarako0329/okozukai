@@ -1,0 +1,450 @@
+/*共通*/
+body {
+	background: #f0fff0;
+}
+a, 
+button, 
+input, 
+textarea, 
+select {
+    touch-action: manipulation;	/*ダブルタップによるズームを無効*/
+}
+.modal-header,.modal-body{
+	padding-top:5px;
+	padding-bottom:5px;
+}
+
+/* モーダル コンテンツエリア */
+.edit {
+	background-color: #4E9ABE;
+	color: #fff;
+
+	border:2px solid #333;
+	opacity:1;
+	-moz-border-radius:6px;
+	-webkit-border-radius:6px;
+}
+.training_menu{
+	background-color: #4E9ABE;
+	color: #fff;
+}
+.mbtn{/*モーダルフッタボタン*/
+	width:130px;
+	/*height: 45px;*/
+	font-size:16px;
+}
+.selected{
+	background-color: darkseagreen;
+}
+.input-btn{/*数字ボタン*/
+	width:33%;
+	height:50px;
+	padding:3px;
+}
+.icn-btn {
+	display: inline-block;
+	text-decoration: none;
+	color: #551d8d;
+	border: solid 1px #67c5ff;
+	border-radius: 3px;
+	transition: .4s;
+	background: #f1f8ff;
+	width:35px;
+	height: 25px;
+	padding:0;
+	position:absolute;
+	right:0px;
+}
+
+.v-enter-active,
+.v-leave-active {
+	transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+	opacity: 0;
+}
+
+
+/*履歴リスト表示部*/
+ul{
+	padding: 0;
+	position: relative;
+}
+
+.shu{
+	color: #2d8fdd;
+	border-left: solid 6px #2d8fdd;/*左側の線*/
+	background: #f1f8ff;/*背景色*/
+	margin-bottom: 0.8px;/*下のバーとの余白*/
+	line-height: 0.8;
+	height:40px;
+	padding-top: 0.4em;
+	padding-bottom: 10px;
+	list-style-type: none!important;/*ポチ消す*/
+}
+
+li.editsb{
+	list-style-type: none!important;/*ポチ消す*/
+	font-size:12px;
+	padding-top: 0.2em;
+	/*margin-left: 15px;*/
+	position:relative;
+	left:-50%;
+	/*border-left: solid 6px #4E9ABE;左側の線*/
+}
+
+.ymd {
+	line-height: 1.3;
+	padding: 0.5em 0.5em 0.5em 1.7em;
+	list-style-type: none!important;
+	background: -webkit-linear-gradient(top, skyblue 0%, #5aade6 100%);/*グラデーション*/
+	background: linear-gradient(to bottom, skyblue 0%, #5aade6 100%);/*グラデーション*/
+	color: #fff;
+}
+.ymd:before {/*疑似要素*/
+	font-family: FontAwesome;
+	content: "\f138";
+	position: absolute;
+	left : 0.5em;
+	color: white;
+}
+
+ul.ttl li.ttl{
+	border-top: 1px solid #1e50a2;
+	border-bottom: 1px solid #1e50a2;
+	padding: 7px;
+	list-style-type: none!important;/*ポチ消す*/
+}
+
+/*履歴リストのテーブル表示部*/
+table {
+	border-collapse: collapse;
+}
+.lst {
+	border-bottom: 1px solid #E0E0F8;
+	box-shadow: 0 1px 0 rgba(255,255,255,1);
+	background:#f1f8ff;
+	color: #B40431;
+	height: 45px;
+	padding-top: 3px;
+}
+
+body{    /*トップページ用*/
+	background: #f1f8ff;
+		margin: 0;
+		padding: 50px 0 70px 0;
+}
+.headerArea {  /*トップページ用*/
+	position: fixed !important;
+	position: absolute;
+	top: 0;
+	/*left: 0;*/
+	width: 100%; 
+	height: 50px;
+	/*background-color: #4E9ABE;*/
+	color: #fff;
+	font-size:10px;
+	z-index:1399;
+}
+.footerArea {  /*トップページ用*/
+	position: fixed !important;
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	height: 65px;
+	/*background-color: #4E9ABE;*/
+	color: #fff;
+}
+.hf_color{
+	background-color: #4E9ABE;
+	height:100%;
+}
+
+body.graph{  /*グラフページ用*/
+	background: #f1f8ff;
+	margin: 0;
+	padding: 375px 0 45px 0;
+	height: 100%;
+	width:100%;
+	position:fixed;
+	top:0;
+	left:0;
+}
+div#headerArea2 {  /*グラフページ用*/
+		position: fixed !important;
+		/*position: absolute;*/
+		top: 0;
+		left: 0;
+		width: 100%;
+		height:370px;
+		background-color: #fff;
+		color: #4E9ABE;
+		z-index: 99;
+		text-align:center;
+}
+.footerArea2 {    /*グラフページ用*/
+		position: fixed !important;
+		/*position: absolute;*/
+		bottom: 0;
+		left: 0;
+		width: 100%;
+		height: 65px;
+		background-color: #4E9ABE;
+		color: #fff;
+}
+
+.open_button{
+		background-color: #4E9ABE;
+}
+#graph {
+	width : 100%;
+	margin: 0px auto; /*上 右 下 左*/
+}
+.graph-title {
+	font-size:16px;
+	font-weight:bold;
+	text-align:center;
+	margin:10px 0 0;
+}
+
+#menu {
+	width:100%;
+	padding:0;
+	margin:0;
+	list-style-type: none;
+}
+#menu li {
+	width:33.3%;
+	float:left;
+	padding:0;
+	margin:0;
+	text-align:center;
+}
+
+#menu li a {
+	width:auto;
+	color:#fff;
+	/*font-size:12px;*/
+	/*font-weight:bold;*/
+	/*text-shadow:0 -1px 0px #333,0 1px 0px #555;*/
+	padding:17px 0;
+	text-decoration:none;
+	display:block;
+	/*background:#666;*/
+	background:#4E9ABE;
+	/*background-image: -moz-linear-gradient(top, #888 0%, #777 50%, #666 50%, #777 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #888), color-stop(0.50, #777), color-stop(0.50, #666), color-stop(1, #777));*/
+	border-left:1px solid #fff;
+	box-shadow: 1px 0px 0px rgba(225,0,0,0.3) inset,
+			 -1px 0px 0px rgba(225,0,0,0.3) inset,
+				0px 1px 1px rgba(0,0,0,0.1) inset,
+				0px -1px 1px rgba(0,0,0,0.3) inset,
+				0px 1px 3px #4E9ABE;
+}
+#menu li:first-child a{
+	border-left:0px;
+	border-radius:5px 0 0 5px;
+	border-left:0;
+	box-shadow:-1px 0px 0px rgba(225,225,225,0.3) inset,
+				0px 1px 1px rgba(0,0,0,0.1) inset,
+				0px -1px 1px rgba(0,0,0,0.3) inset,
+				0px 1px 3px #4E9ABE;
+}
+#menu li:last-child a{
+	border-radius:0 5px 5px 0;
+	box-shadow: 1px 0px 0px rgba(225,225,225,0.3) inset,
+				0px 1px 1px rgba(0,0,0,0.1) inset,
+				0px -1px 1px rgba(0,0,0,0.3) inset,
+				0px 1px 3px #4E9ABE;
+}
+#menu li a:hover {
+	background:#555;
+	background-image: -moz-linear-gradient(top, #555 0%, #444 50%, #333 50%, #444 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #555), color-stop(0.50, #444), color-stop(0.50, #333), color-stop(1, #444));
+	box-shadow: 1px 0px 0px rgba(225,225,225,0) inset,
+			 -1px 0px 0px rgba(225,225,225,0) inset,
+				0px 1px 1px rgba(0,0,0,0.1) inset,
+				0px -1px 1px rgba(0,0,0,0.3) inset,
+				0px 1px 3px #666;
+}
+
+/* CSS: トグルボタン */
+/* 外枠のサイズ定義 */
+.toggle_button {
+  position: relative;
+  width: 45px;
+  height: 20px;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* チェックボックス本体は見えなくする */
+.toggle_input {
+  display: none;
+}
+
+/* レール（背景）の部分 */
+.toggle_rail {
+  width: 45px;
+  height: 20px;
+  background: #fff;
+  border: 3px solid rgb(45, 143, 221);
+  border-radius: 40px;
+  position: relative;
+  display: inline-block;
+  transition: 0.4s;
+  box-sizing: border-box;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+/* つまみ（丸い部分） */
+.toggle_rail:after {
+  content: "";
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  left: 0px;
+  top: 0px;
+  z-index: 2;
+  background: rgb(170, 211, 252);
+  transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* 動きを滑らかに */
+}
+
+/* チェックされた時のレールの色（必要なら） */
+.toggle_input:checked + .toggle_rail {
+  background-color: #fff; /* 背景色は変えず枠線のみにする今のスタイルを維持 */
+}
+
+/* チェックされた時のつまみの移動 */
+.toggle_input:checked + .toggle_rail:after {
+  left: 25px; /* 45px - 14px - 6px(枠線分) で調整 */
+  background: rgb(45, 143, 221);
+}
+
+
+
+.table{
+	font-size:12px;
+}
+.btn-outline-primary{
+	--bs-btn-bg:#fff;
+}
+
+.form-control-sm{
+	font-size:16px;
+}
+
+/* googleボタン全体のスタイル */
+/* アイコンの間隔調整 */
+.google-icon-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+/* テキストの配置調整 */
+.button-text {
+  flex-grow: 1;
+  text-align: left;
+}
+
+/*ローディングアニメーション*/
+.loader-wrap {
+	position: fixed;
+	top:0%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	background: #fff;
+	opacity: 0.7;
+	z-index: 1100
+}
+.loader {
+	color: #5d53ea;
+	font-size: 90px;
+	text-indent: -9999em;
+	overflow: hidden;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	margin: 72px auto;
+	position: relative;
+	-webkit-transform: translateZ(0);
+	-ms-transform: translateZ(0);
+	transform: translateZ(0);
+	-webkit-animation: load6 1.7s infinite ease, round 1.7s infinite ease;
+	animation: load6 1.7s infinite ease, round 1.7s infinite ease;
+	opacity: 1;
+}
+@-webkit-keyframes load6 {
+	0% {
+		box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+	}
+	5%,
+	95% {
+		box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+	}
+	10%,
+	59% {
+		box-shadow: 0 -0.83em 0 -0.4em, -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+	}
+	20% {
+		box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em, -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, -0.749em -0.34em 0 -0.477em;
+	}
+	38% {
+		box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em, -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, -0.82em -0.09em 0 -0.477em;
+	}
+	100% {
+		box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+	}
+}
+@keyframes load6 {
+	0% {
+		box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+	}
+	5%,
+	95% {
+		box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+	}
+	10%,
+	59% {
+		box-shadow: 0 -0.83em 0 -0.4em, -0.087em -0.825em 0 -0.42em, -0.173em -0.812em 0 -0.44em, -0.256em -0.789em 0 -0.46em, -0.297em -0.775em 0 -0.477em;
+	}
+	20% {
+		box-shadow: 0 -0.83em 0 -0.4em, -0.338em -0.758em 0 -0.42em, -0.555em -0.617em 0 -0.44em, -0.671em -0.488em 0 -0.46em, -0.749em -0.34em 0 -0.477em;
+	}
+	38% {
+		box-shadow: 0 -0.83em 0 -0.4em, -0.377em -0.74em 0 -0.42em, -0.645em -0.522em 0 -0.44em, -0.775em -0.297em 0 -0.46em, -0.82em -0.09em 0 -0.477em;
+	}
+	100% {
+		box-shadow: 0 -0.83em 0 -0.4em, 0 -0.83em 0 -0.42em, 0 -0.83em 0 -0.44em, 0 -0.83em 0 -0.46em, 0 -0.83em 0 -0.477em;
+	}
+}
+@-webkit-keyframes round {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+@keyframes round {
+	0% {
+		-webkit-transform: rotate(0deg);
+		transform: rotate(0deg);
+	}
+	100% {
+		-webkit-transform: rotate(360deg);
+		transform: rotate(360deg);
+	}
+}
+/*ローディングアニメーション*/

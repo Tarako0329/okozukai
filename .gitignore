@@ -1,0 +1,14 @@
+.env
+*error_log*
+*.sql
+*.sh
+*.log
+.bk
+backup
+xxx*
+*copy.php
+.ini
+.htaccess
+*.mm
+xxx*
+github_push.txt
