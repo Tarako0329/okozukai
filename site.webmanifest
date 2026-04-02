@@ -1,7 +1,7 @@
 {
-    "name": "お手伝いポイントクラブ",
-    "short_name": "お手伝いポイントクラブ",
-    "icons": [
+	"name": "お手伝いポイントクラブ",
+	"short_name": "お手伝いポイントクラブ",
+	"icons": [
 		{
 			"src": "img/android-chrome-36x36.png",
 			"sizes": "36x36",
@@ -57,30 +57,14 @@
 			"sizes": "512x512",
 			"type": "image/png"
 		}
-    ],
-    "theme_color": "#ffffff",
-    "background_color": "#ffffff",
-    "display": "standalone",
-    "scope": "/",
-    "start_url": "/login.php",
-    "description":"お手伝いポイントを管理するためのアプリです。ポイントをためておこづかいをもらおう！",
-    "id":"/login.php",
-    "screenshots": [
-        {
-            "src": "img/mani_scsho_narrow.png",
-            "sizes": "498x787",
-            "type": "image/png",
-            "form_factor": "narrow",
-            "label": "ホーム画面サンプル"
-        },
-        {
-            "src": "img/mani_scsho_wide.png",
-            "sizes": "1144x806",
-            "type": "image/png",
-            "form_factor": "wide",
-            "label": "ホーム画面サンプル"
-        }
-      ],
-		"orientation":"landscape",
-		"lang":"ja"
+	],
+	"theme_color": "#ffffff",
+	"background_color": "#ffffff",
+	"display": "standalone",
+	"scope": "/",
+	"start_url": "/login.php",
+	"description":"お手伝いポイントを管理するためのアプリです。ポイントをためておこづかいをもらおう！",
+	"id":"/login.php",
+	"orientation":"landscape",
+	"lang":"ja"
 }

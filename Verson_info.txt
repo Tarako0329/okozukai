@@ -23,7 +23,7 @@ php vendor/bin/phinx status
 
 
 ローカルからテスト環境へ
-cd /home/pcntfsrg/public_html/training_test
+cd /home/pcntfsrg/public_html/okozukai_test
 git fetch --all
 git reset --hard origin/master
 #DBマイグレーション
@@ -31,7 +31,7 @@ php vendor/bin/phinx migrate
 
 
 ローカルから本番環境へ
-cd /home/pcntfsrg/public_html/training
+cd /home/pcntfsrg/public_html/okozukai
 git fetch --all
 git reset --hard origin/master
 #DBマイグレーション

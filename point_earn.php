@@ -56,6 +56,9 @@ $my_points = get_user_points($db, (int)$user['user_id']);
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="apple-touch-icon" type="image/png" href="img/apple-touch-icon-180x180.png">
+<link rel="icon" type="image/png" href="img/icon-192x192.png">
+<link rel='manifest' href='site.webmanifest?<?php echo $time;?>'>
 <style>
 :root{
   --c-sky:#d6eef8;--c-mint:#c8f0e0;--c-peach:#fce4d6;--c-lemon:#fdf5c0;
