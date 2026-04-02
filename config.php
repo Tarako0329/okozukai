@@ -33,6 +33,12 @@ define("DB_NAME", $_ENV["DBNAME"]);
 define("KEY", $_ENV["KEY"]);
 define("EXEC_MODE", $_ENV["EXEC_MODE"]);
 
+$time = date("Y-m-d H:i:s");
+if (EXEC_MODE === 'Product') {
+    $time = '20240402';//リリース日
+} else {
+}
+
 spl_autoload_register(function ($className) {
   // 1. 名前空間のバックスラッシュ '\' を、OS標準のパス区切り文字（通常は '/'）に置換
   $path = str_replace('\\', DIRECTORY_SEPARATOR, $className);

@@ -81,161 +81,163 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ログイン | <?= h(APP_NAME) ?></title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<style>
-:root {
-  --c-sky:    #d6eef8;
-  --c-mint:   #c8f0e0;
-  --c-peach:  #fce4d6;
-  --c-lemon:  #fdf5c0;
-  --c-lilac:  #e8d8f8;
-  --c-ink:    #4a4a6a;
-  --c-muted:  #8888aa;
-  --c-white:  #fffef8;
-  --c-accent: #7bb8d4;
-  --font-h:   'Kaisei Decol', serif;
-  --font-b:   'Zen Maru Gothic', sans-serif;
-}
-
-* { box-sizing: border-box; }
-body {
-  font-family: var(--font-b);
-  background: var(--c-white);
-  color: var(--c-ink);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-/* 水彩風背景 */
-body::before {
-  content: '';
-  position: fixed; inset: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 10% 20%, rgba(214,238,248,.7) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 80% at 90% 80%, rgba(200,240,224,.6) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(253,245,192,.5) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 40% at 80% 10%, rgba(232,216,248,.5) 0%, transparent 50%),
-    #fffef8;
-  z-index: -1;
-}
-
-/* 浮かぶ丸 */
-.bubble {
-  position: fixed;
-  border-radius: 50%;
-  opacity: .18;
-  animation: float 8s ease-in-out infinite;
-}
-.bubble:nth-child(1){ width:180px;height:180px;background:var(--c-sky);  top:-40px; left:-40px; animation-delay:0s;}
-.bubble:nth-child(2){ width:120px;height:120px;background:var(--c-mint); bottom:20%; right:-30px; animation-delay:2s;}
-.bubble:nth-child(3){ width:90px; height:90px; background:var(--c-peach);bottom:-20px;left:30%; animation-delay:4s;}
-.bubble:nth-child(4){ width:60px; height:60px; background:var(--c-lilac);top:30%; right:20%; animation-delay:1s;}
-
-@keyframes float {
-  0%,100%{ transform: translateY(0) rotate(0deg); }
-  50%     { transform: translateY(-20px) rotate(5deg); }
-}
-
-.login-card {
-  background: rgba(255,254,248,.85);
-  backdrop-filter: blur(12px);
-  border: 2px solid rgba(123,184,212,.25);
-  border-radius: 28px;
-  padding: 2.5rem 2.8rem;
-  max-width: 420px;
-  width: 100%;
-  box-shadow: 0 8px 40px rgba(74,74,106,.08), 0 2px 8px rgba(123,184,212,.12);
-}
-
-.app-logo {
-  font-family: var(--font-h);
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--c-ink);
-  text-align: center;
-  margin-bottom: .2rem;
-  letter-spacing: .05em;
-}
-.app-logo span { color: var(--c-accent); }
-
-.app-sub {
-  text-align: center;
-  font-size: .82rem;
-  color: var(--c-muted);
-  margin-bottom: 1.8rem;
-}
-
-.form-label {
-  font-weight: 700;
-  font-size: .88rem;
-  color: var(--c-ink);
-  margin-bottom: .3rem;
-}
-
-.form-control, .form-select {
-  border: 1.5px solid rgba(123,184,212,.4);
-  border-radius: 14px;
-  background: rgba(255,254,248,.9);
-  color: var(--c-ink);
-  font-family: var(--font-b);
-  padding: .6rem 1rem;
-  transition: border-color .2s, box-shadow .2s;
-}
-.form-control:focus, .form-select:focus {
-  border-color: var(--c-accent);
-  box-shadow: 0 0 0 3px rgba(123,184,212,.2);
-  background: #fff;
-  outline: none;
-}
-
-.btn-login {
-  width: 100%;
-  background: linear-gradient(135deg, #9dd4e8 0%, #b5e8d0 100%);
-  border: none;
-  border-radius: 50px;
-  color: var(--c-ink);
-  font-family: var(--font-h);
-  font-weight: 700;
-  font-size: 1.05rem;
-  padding: .75rem;
-  letter-spacing: .1em;
-  cursor: pointer;
-  box-shadow: 0 4px 16px rgba(123,184,212,.3);
-  transition: transform .15s, box-shadow .15s;
-}
-.btn-login:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(123,184,212,.4);
-}
-.btn-login:active { transform: translateY(0); }
-
-.alert-soft {
-  background: rgba(252,228,214,.6);
-  border: 1.5px solid rgba(240,160,120,.3);
-  border-radius: 12px;
-  color: #8b5a3a;
-  font-size: .88rem;
-  padding: .6rem 1rem;
-}
-
-.deco-stars {
-  text-align: center;
-  font-size: 1.2rem;
-  margin-bottom: 1.2rem;
-  letter-spacing: .3em;
-  opacity: .7;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ログイン | <?= h(APP_NAME) ?></title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="script/function.js?<?php echo $time; ?>"></script>
+  <link rel='manifest' href='site.webmanifest?<?php echo $time;?>'>
+  <style>
+    :root {
+      --c-sky:    #d6eef8;
+      --c-mint:   #c8f0e0;
+      --c-peach:  #fce4d6;
+      --c-lemon:  #fdf5c0;
+      --c-lilac:  #e8d8f8;
+      --c-ink:    #4a4a6a;
+      --c-muted:  #8888aa;
+      --c-white:  #fffef8;
+      --c-accent: #7bb8d4;
+      --font-h:   'Kaisei Decol', serif;
+      --font-b:   'Zen Maru Gothic', sans-serif;
+      }
+  
+    * { box-sizing: border-box; }
+    body {
+      font-family: var(--font-b);
+      background: var(--c-white);
+      color: var(--c-ink);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      }
+  
+    /* 水彩風背景 */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 10% 20%, rgba(214,238,248,.7) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 90% 80%, rgba(200,240,224,.6) 0%, transparent 55%),
+        radial-gradient(ellipse 50% 50% at 50% 50%, rgba(253,245,192,.5) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 10%, rgba(232,216,248,.5) 0%, transparent 50%),
+        #fffef8;
+      z-index: -1;
+      }
+  
+    /* 浮かぶ丸 */
+    .bubble {
+      position: fixed;
+      border-radius: 50%;
+      opacity: .18;
+      animation: float 8s ease-in-out infinite;
+    }
+    .bubble:nth-child(1){ width:180px;height:180px;background:var(--c-sky);  top:-40px; left:-40px; animation-delay:0s;}
+    .bubble:nth-child(2){ width:120px;height:120px;background:var(--c-mint); bottom:20%; right:-30px; animation-delay:2s;}
+    .bubble:nth-child(3){ width:90px; height:90px; background:var(--c-peach);bottom:-20px;left:30%; animation-delay:4s;}
+      .bubble:nth-child(4){ width:60px; height:60px; background:var(--c-lilac);top:30%; right:20%; animation-delay:1s;}
+  
+    @keyframes float {
+      0%,100%{ transform: translateY(0) rotate(0deg); }
+      50%     { transform: translateY(-20px) rotate(5deg); }
+      }
+  
+    .login-card {
+      background: rgba(255,254,248,.85);
+      backdrop-filter: blur(12px);
+      border: 2px solid rgba(123,184,212,.25);
+      border-radius: 28px;
+      padding: 2.5rem 2.8rem;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 8px 40px rgba(74,74,106,.08), 0 2px 8px rgba(123,184,212,.12);
+      }
+  
+    .app-logo {
+      font-family: var(--font-h);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--c-ink);
+      text-align: center;
+      margin-bottom: .2rem;
+      letter-spacing: .05em;
+    }
+      .app-logo span { color: var(--c-accent); }
+  
+    .app-sub {
+      text-align: center;
+      font-size: .82rem;
+      color: var(--c-muted);
+      margin-bottom: 1.8rem;
+      }
+  
+    .form-label {
+      font-weight: 700;
+      font-size: .88rem;
+      color: var(--c-ink);
+      margin-bottom: .3rem;
+      }
+  
+    .form-control, .form-select {
+      border: 1.5px solid rgba(123,184,212,.4);
+      border-radius: 14px;
+      background: rgba(255,254,248,.9);
+      color: var(--c-ink);
+      font-family: var(--font-b);
+      padding: .6rem 1rem;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: var(--c-accent);
+      box-shadow: 0 0 0 3px rgba(123,184,212,.2);
+      background: #fff;
+      outline: none;
+      }
+  
+    .btn-login {
+      width: 100%;
+      background: linear-gradient(135deg, #9dd4e8 0%, #b5e8d0 100%);
+      border: none;
+      border-radius: 50px;
+      color: var(--c-ink);
+      font-family: var(--font-h);
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: .75rem;
+      letter-spacing: .1em;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(123,184,212,.3);
+      transition: transform .15s, box-shadow .15s;
+    }
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(123,184,212,.4);
+    }
+      .btn-login:active { transform: translateY(0); }
+  
+    .alert-soft {
+      background: rgba(252,228,214,.6);
+      border: 1.5px solid rgba(240,160,120,.3);
+      border-radius: 12px;
+      color: #8b5a3a;
+      font-size: .88rem;
+      padding: .6rem 1rem;
+      }
+  
+    .deco-stars {
+      text-align: center;
+      font-size: 1.2rem;
+      margin-bottom: 1.2rem;
+      letter-spacing: .3em;
+      opacity: .7;
+    }
+  </style>
 </head>
 <body>
 <div class="bubble"></div>

@@ -1,6 +1,6 @@
 {
-    "name": "肉体改造ネットワーク",
-    "short_name": "肉体改造ネットワーク",
+    "name": "お手伝いポイントクラブ",
+    "short_name": "お手伝いポイントクラブ",
     "icons": [
 		{
 			"src": "img/android-chrome-36x36.png",
@@ -62,9 +62,9 @@
     "background_color": "#ffffff",
     "display": "standalone",
     "scope": "/",
-    "start_url": "/index.php",
-    "description":"トレーニングを記録しよう！トレーニング記録アプリをインストール♪",
-    "id":"/index.php",
+    "start_url": "/login.php",
+    "description":"お手伝いポイントを管理するためのアプリです。ポイントをためておこづかいをもらおう！",
+    "id":"/login.php",
     "screenshots": [
         {
             "src": "img/mani_scsho_narrow.png",
