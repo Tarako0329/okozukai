@@ -2,6 +2,7 @@
 // login.php
 require_once 'config.php';
 use classes\Security\Security;
+$family_name = $_COOKIE['family_name'] ?? '';
 
 
 // すでにログイン済みならダッシュボードへ
@@ -18,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $family_name = trim((string)($_POST['family_name'] ?? ""));
     $username  = trim($_POST['username'] ?? '');
     $password  = $_POST['password'] ?? '';
+    setCookie('family_name', $family_name, time() + 60 * 60 * 24 * 360); // 360日間保存
 
     if($action === 'register'){
       try{
@@ -262,17 +264,8 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
 
     <div class="mb-3">
       <label class="form-label">🏠 かぞく</label>
-      <!--<select name="family_id" class="form-select" required>
-        <option value="">えらんでね</option>
-        <?php foreach ($families as $f): ?>
-        <option value="<?= h($f['family_id']) ?>"
-          <?= isset($_POST['family_id']) && $_POST['family_id'] == $f['family_id'] ? 'selected' : '' ?>>
-          <?= h($f['family_name']) ?>
-        </option>
-        <?php endforeach; ?>
-        </select>-->
-        <input type="text" name="family_name" class="form-control"
-             value="<?= h($_POST['family_name'] ?? '') ?>"
+      <input type="text" name="family_name" class="form-control"
+             value="<?= h($family_name ?? '') ?>"
              placeholder="家族名" required autocomplete="family_name">
     </div>
 

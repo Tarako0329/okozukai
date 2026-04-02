@@ -191,7 +191,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
             <label class="form-label">⭐ ポイント *</label>
             <input type="number" name="default_point" class="form-control"
                    value="<?= h($edit_master['default_point'] ?? '3') ?>"
-                   step="0.5" min="0.5" required>
+                   step="0.5" required>
           </div>
 
           <div class="mb-2">

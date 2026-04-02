@@ -1,7 +1,5 @@
 ver0.00.0:MyFirstCommit
 
-
-
 【Issues】
 
 【完了】
