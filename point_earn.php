@@ -58,6 +58,7 @@ $my_points = get_user_points($db, (int)$user['user_id']);
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="apple-touch-icon" type="image/png" href="img/apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="img/icon-192x192.png">
+<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="favicon.ico">
 <link rel='manifest' href='site.webmanifest?<?php echo $time;?>'>
 <style>
 :root{

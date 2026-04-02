@@ -109,6 +109,7 @@ $avatar_colors = ['#FFB6C1','#F8A4C8','#A4C8F8','#A4F8C8','#F8D4A4','#D4A4F8','#
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="apple-touch-icon" type="image/png" href="img/apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="img/icon-192x192.png">
+<link rel="shortcut icon" type="image/vnd.microsoft.icon" href="favicon.ico">
 <link rel='manifest' href='site.webmanifest?<?php echo $time;?>'>
 <style>
 :root{

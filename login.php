@@ -91,6 +91,7 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
   <script src="script/function.js?<?php echo $time; ?>"></script>
   <link rel="apple-touch-icon" type="image/png" href="img/apple-touch-icon-180x180.png">
   <link rel="icon" type="image/png" href="img/icon-192x192.png">
+  <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="favicon.ico">
   <link rel='manifest' href='site.webmanifest?<?php echo $time;?>' crossorigin="use-credentials">
   <style>
     :root {
