@@ -214,5 +214,32 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+	if ('serviceWorker' in navigator) {
+		// ページ読み込み完了後に登録を実行（初期表示の速度を落とさないため）
+		window.addEventListener('load', function() {
+			navigator.serviceWorker.register('serviceworker.js')
+				.then(registration => {
+					// 登録成功
+					console.log("Service Worker の登録に成功しました！");
+
+					// 更新が見つかった時の処理
+					registration.onupdatefound = function() {
+						console.log('新しい Service Worker を検知しました。更新中...');
+					};
+				})
+				.catch(err => {
+					// 登録失敗
+					console.error("Service Worker の登録に失敗しました:", err);
+				});
+		});
+	}
+
+	// PWA環境（インストール済みアプリとして起動）の判定
+	if (window.matchMedia('(display-mode: standalone)').matches) {
+		console.log("PWA環境で実行されています。");
+		// ここにアプリ専用の処理（例：戻るボタンの表示調整など）を記述
+	}
+</script>
 </body>
 </html>

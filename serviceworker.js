@@ -1,36 +1,33 @@
-// キャッシュするリソース(css、jsがあれば個別で追加)
-//キャッシュ利用部分を止める
+// キャッシュするリソース(必要に応じて urlsToCache に追加してください)
 const CACHE_VERSION = 'v39_';
-const CACHE_NAME = `${CACHE_VERSION}!${registration.scope}`;
+// self.registration.scope で自身のスコープを参照します
+const CACHE_NAME = `${CACHE_VERSION}!${self.registration.scope}`;
 
-// キャッシュするファイルをセットする
 const urlsToCache = [
-  '/css'
-  ,'/img'
-  ,'/favicon.ico'
+  // '/css',
+  // '/img',
+  // '/favicon.ico'
 ];
 
-//サービスワーカーインストール
-
+// サービスワーカーインストール
 self.addEventListener('install', function(e) {
-    console.log('[ServiceWorker] Install hoge');
-    e.waitUntil(skipWaiting());
+    console.log('[ServiceWorker] Install');
+    // 新しいSWをすぐに有効化する
+    self.skipWaiting();
 });
 
-
-//サービスワーカーアクティブ
-
+// サービスワーカーアクティブ
 self.addEventListener('activate', function(e) {
-    console.log('[ServiceWorker] Activate hoge');
+    console.log('[ServiceWorker] Activate');
+    // 古いキャッシュの削除処理などをここで行うのが一般的ですが、
+    // 今はインストールを優先するため最小限にしています。
 });
 
-
-// サービスワーカーフェッチ
-
+// サービスワーカーフェッチ（AndroidのPWAインストールにはこのイベントが必須）
 self.addEventListener('fetch', function(event) {
-    //console.log('service worker fetch ... ' + event.request.url);
+    // 現在はキャッシュを利用せず、すべてネットワーク経由で取得する設定です。
+    // インストールボタンを出すための「空のイベント」として機能します。
 });
-
 
 
 
