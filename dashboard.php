@@ -23,16 +23,19 @@ if (!$is_parent) {
     $my_points = get_user_points($db, (int)$user['user_id']);
 }
 
+$uid = $is_parent ? '%' : (int)$user['user_id'];
+U::log("Fetching recent logs for family ID: $family_id, user ID: $uid");
+
 // 最近の履歴（家族全体）
 $stmt = $db->prepare(
     'SELECT pl.*, u.display_name, u.avatar_color
      FROM point_logs pl
      JOIN users u ON u.user_id = pl.user_id
-     WHERE pl.family_id = ?
+     WHERE pl.family_id = ? and pl.user_id like ?
      ORDER BY pl.created_at DESC
      LIMIT 10'
 );
-$stmt->execute([$family_id]);
+$stmt->execute([$family_id, $uid]);
 $recent_logs = $stmt->fetchAll();
 ?>
 <!DOCTYPE html>

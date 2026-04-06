@@ -50,7 +50,11 @@ class Utilities {
 			$return = true;
 		}else{
 			log_writer2("Util::send_line - \$response",$response,"lv0");
-			self::send_mail(SYSTEM_NOTICE_MAIL,"LINE通知失敗","LINE通知に失敗しました。\r\n宛先:".$to."\r\n内容:\r\n".$body,TITLE." onLineShop");
+			self::send_mail(SYSTEM_NOTICE_MAIL
+				,"LINE通知失敗"	//件名
+				,"LINE通知に失敗しました。\r\n宛先:".$to."\r\n内容:\r\n".$body //本文
+				,APP_NAME."-".EXEC_MODE	//送信元名
+			);
 			$return = false;
 		}
 
@@ -114,5 +118,43 @@ class Utilities {
 		}
 	}
 
+	// =========================================================
+	// オリジナルログ出力(error_log)
+	// =========================================================
+	private static function log_writer($hensuu_name,$msg){
+		$log = var_export($msg,true);
+		//file_put_contents("error_log","[".date("Y/m/d H:i:s")."] log_writer => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log."\n",FILE_APPEND);
+		//error_log("[".date("Y/m/d H:i:s")."] log_writer => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log."\n");
+		error_log("U::log => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log."\n");
+	}
+	public static function log(string $hensuu_name = "",$msg="",int $kankyo = 4):void{
+		//$kankyo:1=全環境+メール通知 2=全環境 3=本番以外 4=テスト・ローカル環境のみ(デフォルト)
+		if($kankyo===1){
+			log_writer($hensuu_name,$msg);
+			$log = $hensuu_name."\n".var_export($msg,true);
+
+			self::send_mail(SYSTEM_NOTICE_MAIL,"【".EXEC_MODE."】".APP_NAME.":".$hensuu_name,$log,EXEC_MODE."-".APP_NAME);
+		}else if($kankyo===2){
+			self::log_writer($hensuu_name,$msg);
+		}else if($kankyo===3 && EXEC_MODE!=="Product"){
+			self::log_writer($hensuu_name,$msg);
+		}else if($kankyo===4 && (EXEC_MODE==="Test" || EXEC_MODE==="Local")){
+			self::log_writer($hensuu_name,$msg);
+		}else{
+			return;
+		}
+	}
+	public static function send_E(\Throwable $e, string $subject = "", string $comment=""):void{
+		$subject = self::exist($subject) ? $subject : $_SERVER["PHP_SELF"];
+		$msg = "\n[".$_SERVER["PHP_SELF"]." -> ".$subject."]\n";
+		$msg .= "コメント       : " . $comment . "\n";
+		$msg .= "Eメッセージ    : " . $e->getMessage() . "\n";
+    $msg .= "エラーコード   : " . $e->getCode() . "\n";
+    $msg .= "発生場所       : " . $e->getFile() . " の " . $e->getLine() . "行目\n";
+		$msg .= "スタックトレース: " . $e->getTraceAsString() . "\n\n";
+		$msg .= "\$e => ".var_export($e,true);
+		self::log_writer($subject,$msg);
+		self::send_mail(SYSTEM_NOTICE_MAIL,"【".EXEC_MODE."：異常】".APP_NAME." ".$subject,$msg,EXEC_MODE."-".APP_NAME);
+	}
 }
 ?>

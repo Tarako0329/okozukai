@@ -33,6 +33,16 @@ define("DB_NAME", $_ENV["DBNAME"]);
 define("KEY", $_ENV["KEY"]);
 define("EXEC_MODE", $_ENV["EXEC_MODE"]);
 
+//メール送信関連
+define("HOST", $_ENV["HOST"]);
+define("PORT", $_ENV["PORT"]);
+define("FROM", $_ENV["FROM"]);
+define("PROTOCOL", $_ENV["PROTOCOL"]);
+define("POP_HOST", $_ENV["POP_HOST"]);
+define("POP_USER", $_ENV["POP_USER"]);
+define("POP_PASS", $_ENV["POP_PASS"]);
+define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
+
 $time = date("Y-m-d H:i:s");
 if (EXEC_MODE === 'Product') {
     $time = '20240402';//リリース日
