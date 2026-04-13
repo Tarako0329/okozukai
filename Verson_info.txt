@@ -1,4 +1,5 @@
 ver0.00.0:MyFirstCommit
+ver0.00.1:マニフェスト修正
 
 【Issues】
 

@@ -45,8 +45,9 @@ define("SYSTEM_NOTICE_MAIL",$_ENV["SYSTEM_NOTICE_MAIL"]);
 
 $time = date("Y-m-d H:i:s");
 if (EXEC_MODE === 'Product') {
-    $time = '20240402';//リリース日
+    $time = '20240413';//リリース日
 } else {
+    $time = date("Y-m-d H:i:s");
 }
 
 spl_autoload_register(function ($className) {

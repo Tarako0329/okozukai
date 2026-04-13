@@ -65,6 +65,6 @@
 	"start_url": "/login.php",
 	"description":"お手伝いポイントを管理するためのアプリです。ポイントをためておこづかいをもらおう！",
 	"id":"/login.php",
-	"orientation":"landscape",
+	"orientation":"portrait",
 	"lang":"ja"
 }
