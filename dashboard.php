@@ -121,7 +121,7 @@ body::before {
   border: 1.5px solid rgba(255,255,255,.8);
   border-radius: 24px;
   box-shadow: 0 4px 24px rgba(74,74,106,.07);
-  padding: 1.4rem 1.6rem;
+  padding: 1.2rem 1.2rem;
   margin-bottom: 1.2rem;
   transition: transform .2s, box-shadow .2s;
 }
@@ -174,7 +174,7 @@ body::before {
 .log-point.earn   { color: #2a9a6a; font-weight: 700; }
 .log-point.redeem { color: #c05050; font-weight: 700; }
 .log-task  { font-weight: 700; font-size: .9rem; }
-.log-meta  { font-size: .78rem; color: var(--c-muted); }
+.log-meta  { font-weight: 400; font-size: .78rem; color: var(--c-muted); }
 
 /* === BUTTONS === */
 .btn-washi {
@@ -211,6 +211,7 @@ body::before {
   font-size: .82rem;
   color: #7a6a2a;
   font-weight: 700;
+  width: 100%;
 }
 
 .page-wrap {
@@ -257,7 +258,7 @@ body::before {
       </div>
       <div class="ms-auto text-end">
         <div style="font-size:.78rem;color:var(--c-muted)">1pt = <?= h(number_format($user['point_rate'])) ?> 円</div>
-        <span class="rate-badge">💴 <?= h(number_format($my_points * $user['point_rate'])) ?> 円ぶん</span>
+        <div class="rate-badge"><?= h(number_format($my_points * $user['point_rate'])) ?> 円分</div>
       </div>
     </div>
     <div class="text-center py-2">
@@ -296,7 +297,7 @@ body::before {
     </div>
     <div>
       <div class="child-name"><?= h($child['display_name']) ?></div>
-      <div class="child-yen">💴 <?= h(number_format($pts * $user['point_rate'])) ?> 円ぶん</div>
+      <div class="child-yen"><?= h(number_format($pts * $user['point_rate'])) ?> 円分</div>
     </div>
     <div class="ms-auto text-end">
       <div class="child-pts"><?= h(number_format($pts, 1)) ?></div>
@@ -322,15 +323,18 @@ body::before {
         <?= $log['log_type']==='earn' ? '✋' : '💴' ?>
       </div>
       <div style="flex:1;min-width:0">
-        <div class="log-task"><?= h($log['task_name']) ?></div>
         <div class="log-meta">
-          <?= h($log['display_name']) ?> ·
-          <?= h(date('m/d H:i', strtotime($log['created_at']))) ?>
-          <?php if ($log['memo']): ?> · <?= h(mb_substr($log['memo'],0,20,'UTF-8')) ?><?php endif; ?>
+          <?= h("手伝日[".date('m/d', strtotime($log['earn_at']))."]") ?>・
+          <?= h("    input at [".date('m/d H:i', strtotime($log['created_at']))."]") ?>
+        </div>
+        <div class="log-task d-flex"><?= h($log['task_name']) ?>
+          <div class="log-meta pt-1 ps-3">
+            <?php if ($log['memo']): ?>  <?= h(mb_substr("メモ: " . $log['memo'],0,20,'UTF-8')) ?><?php endif; ?>
+          </div>
         </div>
       </div>
       <div class="log-point <?= h($log['log_type']) ?>">
-        <?= $log['log_type']==='earn' ? '+' : '-' ?><?= h(number_format(abs($log['point']),1)) ?>pt
+        <?= $log['point']>0 ? '+' : '-' ?><?= h(number_format(abs($log['point']),1)) ?>pt
       </div>
     </div>
     <?php endforeach; ?>

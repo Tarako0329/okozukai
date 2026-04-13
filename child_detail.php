@@ -7,6 +7,7 @@ $db   = get_db();
 $family_id = $user['family_id'];
 $is_parent = ($user['role'] === 'parent');
 
+
 if ($is_parent) {
     $target_id = (int)($_GET['user_id'] ?? 0);
     $stmt = $db->prepare('SELECT * FROM users WHERE user_id=? AND family_id=? AND role="child"');
@@ -17,6 +18,22 @@ if ($is_parent) {
     $target_id = (int)$user['user_id'];
     $target    = ['display_name'=>$user['display_name'],'avatar_color'=>$user['avatar_color']];
 }
+
+$action = $_GET['action'] ?? 'none';
+if ($action === 'delete') {
+    $log_id = (int)($_GET['log_id'] ?? 0);
+    if ($log_id > 0) {
+        // ログの所有者を確認してから削除
+        $stmt = $db->prepare('SELECT pl.user_id FROM point_logs pl JOIN users u ON pl.user_id=u.user_id WHERE pl.log_id=? AND u.family_id=? AND u.user_id = ?');
+        $stmt->execute([$log_id, $family_id, $user['user_id']]);
+        $owner_id = (int)$stmt->fetchColumn();
+        if ($owner_id > 0) {
+            $stmt = $db->prepare('DELETE FROM point_logs WHERE log_id=?');
+            $stmt->execute([$log_id]);
+        }
+    }
+}
+
 
 $current_points = get_user_points($db, $target_id);
 
@@ -31,14 +48,14 @@ $total = (int)$stmt->fetchColumn();
 $pages = (int)ceil($total / $limit);
 
 $stmt = $db->prepare(
-    'SELECT * FROM point_logs WHERE user_id=? ORDER BY created_at DESC LIMIT ? OFFSET ?'
+    'SELECT * FROM point_logs WHERE user_id=? ORDER BY earn_at DESC LIMIT ? OFFSET ?'
 );
 $stmt->execute([$target_id, $limit, $offset]);
 $logs = $stmt->fetchAll();
 
 // 月次集計
 $stmt = $db->prepare(
-    'SELECT DATE_FORMAT(created_at,"%Y-%m") AS ym,
+    'SELECT DATE_FORMAT(earn_at,"%Y-%m") AS ym,
             SUM(CASE WHEN log_type="earn" THEN point ELSE 0 END) AS earned,
             SUM(CASE WHEN log_type="redeem" THEN ABS(point) ELSE 0 END) AS redeemed
      FROM point_logs WHERE user_id=?
@@ -56,6 +73,7 @@ $monthly = $stmt->fetchAll();
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="apple-touch-icon" type="image/png" href="img/apple-touch-icon-180x180.png">
 <link rel="icon" type="image/png" href="img/icon-192x192.png">
 <link rel='manifest' href='site.webmanifest?<?php echo $time;?>'>
@@ -173,7 +191,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
   <?php endif; ?>
 
   <!-- 履歴 -->
-  <div class="washi-card">
+  <div class="washi-card pe-3">
     <div class="sec-title">📋 ポイントのきろく</div>
     <?php if (empty($logs)): ?>
     <p style="color:var(--c-muted);text-align:center;padding:1rem;font-size:.9rem">まだきろくがありません 🌱</p>
@@ -186,12 +204,19 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
       <div style="flex:1;min-width:0">
         <div class="log-task"><?= h($log['task_name']) ?></div>
         <div class="log-meta">
-          <?= h(date('Y/m/d H:i', strtotime($log['created_at']))) ?>
+          <?= h(date('Y/m/d', strtotime($log['earn_at']))) ?>
           <?php if ($log['memo']): ?> · <?= h($log['memo']) ?><?php endif; ?>
         </div>
       </div>
       <?php if ($log['log_type']==='earn'): ?>
-      <div class="log-pt-earn">+<?= h(number_format(abs($log['point']),1)) ?>pt</div>
+      <div class="log-pt-earn">
+        <?= h($log['point'] > 0 ? '+' : '-') ?><?= h(number_format(abs($log['point']),1)) ?>pt
+        <a href="child_detail.php?id=<?= h($log['user_id']) ?>&action=delete&log_id=<?= h($log['log_id']) ?>" 
+          class="ms-2" 
+          onclick="return confirm('本当に削除しますか？');">
+          <i class="bi bi-trash"></i>
+        </a>
+      </div>
       <?php else: ?>
       <div class="log-pt-redeem">-<?= h(number_format(abs($log['point']),1)) ?>pt</div>
       <?php endif; ?>

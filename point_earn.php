@@ -37,10 +37,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = 'ポイントは0にできません。';
     } else {
         $stmt = $db->prepare(
-            'INSERT INTO point_logs (family_id, user_id, master_id, task_name, point, memo, log_type)
-             VALUES (?, ?, ?, ?, ?, ?, "earn")'
+            'INSERT INTO point_logs (family_id, user_id, master_id, task_name, point, memo, log_type,earn_at)
+             VALUES (?, ?, ?, ?, ?, ?, "earn", ?)'
         );
-        $stmt->execute([$family_id, $user['user_id'], $master_id, $master['task_name'], $point, $memo ?: null]);
+        $stmt->execute([$family_id, $user['user_id'], $master_id, $master['task_name'], $point, $memo ?: null, $_POST['date'] ?? date('Y-m-d')]);
         $success = true;
     }
 }
@@ -224,9 +224,13 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
     <div class="washi-card">
       <div class="sec-title">📝 ポイントとメモ</div>
       <div class="mb-3">
+        <label class="form-label">⭐ 日付</label>
+        <input type="date" name="date" id="dateInput" class="form-control" value="<?= date('Y-m-d') ?>" required>
+      </div>
+      <div class="mb-3">
         <label class="form-label">⭐ ポイント（かえてもいいよ）</label>
         <input type="number" name="point" id="pointInput" class="form-control"
-               step="0.5" min="-999" max="9999" placeholder="ポイントをにゅうりょく" required>
+               step="1" min="-999" max="9999" placeholder="ポイントをにゅうりょく" required>
       </div>
       <div class="mb-3">
         <label class="form-label">💬 メモ（なくてもいい）</label>

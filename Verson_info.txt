@@ -1,5 +1,6 @@
 ver0.00.0:MyFirstCommit
 ver0.00.1:マニフェスト修正
+ver0.01.0:ポイント削除機能追加
 
 【Issues】
 
