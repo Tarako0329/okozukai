@@ -211,11 +211,15 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
       <?php if ($log['log_type']==='earn'): ?>
       <div class="log-pt-earn">
         <?= h($log['point'] > 0 ? '+' : '-') ?><?= h(number_format(abs($log['point']),1)) ?>pt
+        <?php if ($log['point'] > 0 || $is_parent): ?>
         <a href="child_detail.php?id=<?= h($log['user_id']) ?>&action=delete&log_id=<?= h($log['log_id']) ?>" 
           class="ms-2" 
           onclick="return confirm('本当に削除しますか？');">
           <i class="bi bi-trash"></i>
         </a>
+        <?php else: ?>
+          <i class="bi bi-trash text-secondary"></i>
+        <?php endif; ?>
       </div>
       <?php else: ?>
       <div class="log-pt-redeem">-<?= h(number_format(abs($log['point']),1)) ?>pt</div>
