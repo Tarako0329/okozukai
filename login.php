@@ -95,6 +95,9 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
   <link rel="icon" type="image/png" href="img/icon-192x192.png">
   <link rel="shortcut icon" type="image/vnd.microsoft.icon" href="favicon.ico">
   <link rel='manifest' href='site.webmanifest?<?php echo $time;?>' crossorigin="use-credentials">
+  <!--ajaxライブラリ-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+  <script>axios.defaults.baseURL = "<?php echo ROOT_URL;?>";</script>
   <style>
     :root {
       --c-sky:    #d6eef8;
@@ -242,6 +245,36 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
       letter-spacing: .3em;
       opacity: .7;
     }
+
+    details {
+      overflow: hidden;
+    }
+
+    details summary {
+      list-style: none;
+      cursor: pointer;
+    }
+
+    details summary::before {
+      content: "？ ";
+      font-weight: bold;
+      color: var(--c-accent);
+    }
+
+    details > :not(summary) {
+      animation: slideDown 1s ease-out;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        max-height: 0;
+      }
+      to {
+        opacity: 1;
+        max-height: 500px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -250,7 +283,7 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
 <div class="bubble"></div>
 <div class="bubble"></div>
 
-<div class="login-card">
+<div class="login-card p-3">
   <div class="app-logo">⭐ おてつだい<span>ポイント</span></div>
   <p class="app-sub">家族みんなでポイントをためよう！</p>
   <div class="deco-stars">🌸 🌼 🌈</div>
@@ -263,10 +296,11 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
     <input type="hidden" name="csrf_token" value="<?= h(csrf_token()) ?>">
 
     <div class="mb-3">
-      <label class="form-label">🏠 かぞく</label>
+      <label class="form-label">🏠 かぞくID</label>
       <input type="text" name="family_name" class="form-control"
              value="<?= h($family_name ?? '') ?>"
-             placeholder="家族名" required autocomplete="family_name">
+             placeholder="家族名" required autocomplete="family_name" onblur="check_family_name()">
+      <small class="form-text text-muted" id="family_name_help">家族IDはスペースなしで入力してください。</small>
     </div>
 
     <div class="mb-3">
@@ -283,7 +317,16 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
     </div>
 
     <button type="submit" class="btn-login mb-3" name="action" value="login">ログイン ✨</button>
-    <button type="submit" class="btn-login" name="action" value="register">はじめて ✨</button>
+    <button type="submit" class="btn-login" name="action" value="register">家族をつくる ✨</button>
+    <details>
+      <summary>
+        使い方
+      </summary>
+      おとうさん、おかあさんが最初に家族IDなどを決めて、「家族をつくる」から登録してください。<br>
+      登録すると管理画面に入れますので、そこでお子さんのIDやポイントのルールを設定してください。<br>
+      お子さんは「ログイン」から、家族IDと自分のIDを入力してログインしてください。<br>
+      
+    </details>
   </form>
 </div>
 
@@ -314,6 +357,23 @@ $families = $db->query('SELECT family_id, family_name FROM families ORDER BY fam
 		console.log("PWA環境で実行されています。");
 		// ここにアプリ専用の処理（例：戻るボタンの表示調整など）を記述
 	}
+  function check_family_name(){
+    const family_name = document.querySelector('input[name="family_name"]').value.trim();
+    const message = document.querySelector('#family_name_help');
+    if(family_name === '') return;
+    axios.get('ajax_check_family.php', { params: { family_name } })
+      .then(response => {
+        if (response.data.exists) {
+          family_name_help.textContent = 'ログインできます。家族を作る場合はIDを変えて';
+        } else {
+          family_name_help.textContent = '新規登録できます。';
+        }
+      })
+      .catch(error => {
+        console.error('エラー:', error);
+        alert('家族IDの確認中にエラーが発生しました。');
+      });
+  }
 </script>
 </body>
 </html>

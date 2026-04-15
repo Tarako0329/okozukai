@@ -32,6 +32,10 @@ define("DB_NAME", $_ENV["DBNAME"]);
 
 define("KEY", $_ENV["KEY"]);
 define("EXEC_MODE", $_ENV["EXEC_MODE"]);
+define('MAIN_DOMAIN', $_ENV['MAIN_DOMAIN']);
+$http = (EXEC_MODE === 'Local') ? 'http://' : 'https://';
+define('ROOT_URL', $http . $_ENV['MAIN_DOMAIN']);
+
 
 //メール送信関連
 define("HOST", $_ENV["HOST"]);
