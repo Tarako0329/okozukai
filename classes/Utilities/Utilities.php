@@ -4,6 +4,21 @@ namespace classes\Utilities;
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception as PHPMailerException;
+
+
+/**
+ * Usage of defined constants required for this class:
+ * - EXEC_MODE: Execution mode (e.g., Local, Test, Product) for conditional behavior
+ * - ROOT_URL: Base URL for the application
+ * - APP_NAME: Name of the application
+ * - SYSTEM_NOTICE_MAIL: Email address for system notifications
+ * - FROM: Default sender email address for mail
+ * - HOST: SMTP host for email sending
+ * - POP_USER: Username for POP/IMAP authentication
+ * - POP_PASS: Password for POP/IMAP authentication
+ * - PORT: Port number for SMTP connection
+ */
+
 class Utilities {
 	/*private const AUTH_OPTIONS = [
 		'cost' => 12, // 計算負荷を上げる（将来的に数値を増やす）
@@ -71,8 +86,8 @@ class Utilities {
 		,string $from = FROM
 		):bool{
 		if(EXEC_MODE==="Local"){
-			log_writer2("Util::send_mail - \$to",$to,"lv3");
-			log_writer2("Util::send_mail - \$body",$body,"lv3");
+			self::log("Util::send_mail - \$to",$to,4);
+			self::log("Util::send_mail - \$body",$body,4);
 			return true;
 		}	
 		if(EXEC_MODE!=="Product"){
@@ -109,11 +124,10 @@ class Utilities {
 			log_writer2("Utilities::send_mail - Mailer Error",$mail->ErrorInfo,"lv1");
 			log_writer2("Utilities::send_mail - Mailer Error \$e",$e,"lv1");
 			return false;
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			// エラーが発生した場合は、後で Monolog などで記録できるようにしておく
-			//error_log("Message could not be sent. Error: {$e->getMessage()}");
-			log_writer2("Utilities::send_mail - Error",$e->getMessage(),"lv1");
-			log_writer2("Utilities::send_mail - Error \$e",$e,"lv1");
+			self::log("Utilities::send_mail - Error",$e->getMessage(),2);
+			self::log("Utilities::send_mail - Error \$e",$e,2);
 			return false;
 		}
 	}
@@ -123,14 +137,12 @@ class Utilities {
 	// =========================================================
 	private static function log_writer($hensuu_name,$msg){
 		$log = var_export($msg,true);
-		//file_put_contents("error_log","[".date("Y/m/d H:i:s")."] log_writer => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log."\n",FILE_APPEND);
-		//error_log("[".date("Y/m/d H:i:s")."] log_writer => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log."\n");
-		error_log("U::log => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log."\n");
+		error_log("U::log => [".$_SERVER["PHP_SELF"]." -> ".$hensuu_name."] => ".$log);
 	}
 	public static function log(string $hensuu_name = "",$msg="",int $kankyo = 4):void{
 		//$kankyo:1=全環境+メール通知 2=全環境 3=本番以外 4=テスト・ローカル環境のみ(デフォルト)
 		if($kankyo===1){
-			log_writer($hensuu_name,$msg);
+			self::log_writer($hensuu_name,$msg);
 			$log = $hensuu_name."\n".var_export($msg,true);
 
 			self::send_mail(SYSTEM_NOTICE_MAIL,"【".EXEC_MODE."】".APP_NAME.":".$hensuu_name,$log,EXEC_MODE."-".APP_NAME);

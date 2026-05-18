@@ -2,6 +2,13 @@
 declare(strict_types=1);
 namespace classes\SpreadSheet;
 
+/**
+ * Usage of defined constants required for this class:
+ * - GOOGLE_AUTH: Google API client ID for authentication
+ * - GOOGLE_AUTH_SKEY: Google API client secret for authentication
+ */
+
+
 class SpreadSheet {
 	private $service;
 	private $spreadsheetId;
@@ -67,7 +74,7 @@ class SpreadSheet {
 				
 			return 'success';
 
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			// IDが無効な場合や、権限エラーなど
 			return 'error';
 		}
@@ -96,7 +103,7 @@ class SpreadSheet {
 				
 				// それ以外のGoogle APIエラー
 				return 'error';
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 				// ネットワークエラーなど、その他の例外
 				log_writer2("シート追加作成でエラー",$e,"lv0");
 				return 'error';
@@ -225,7 +232,7 @@ class SpreadSheet {
 				$this->service->spreadsheets->batchUpdate($this->spreadsheetId, $body);
 				return 'success';
 
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 				return 'error';
 		}
 	}
@@ -271,7 +278,7 @@ class SpreadSheet {
 			$this->service->spreadsheets->batchUpdate($this->spreadsheetId, $body);
 			return 'success';
 
-		} catch (\Exception $e) {
+		} catch (\Throwable $e) {
 			return 'error';
 		}
 	}

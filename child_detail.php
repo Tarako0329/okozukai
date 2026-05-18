@@ -6,7 +6,7 @@ $db   = get_db();
 
 $family_id = $user['family_id'];
 $is_parent = ($user['role'] === 'parent');
-
+U::log("\$_GET", $_GET,4);
 
 if ($is_parent) {
     $target_id = (int)($_GET['user_id'] ?? 0);
@@ -21,15 +21,17 @@ if ($is_parent) {
 
 $action = $_GET['action'] ?? 'none';
 if ($action === 'delete') {
+    
     $log_id = (int)($_GET['log_id'] ?? 0);
     if ($log_id > 0) {
         // ログの所有者を確認してから削除
         $stmt = $db->prepare('SELECT pl.user_id FROM point_logs pl JOIN users u ON pl.user_id=u.user_id WHERE pl.log_id=? AND u.family_id=? AND u.user_id = ?');
-        $stmt->execute([$log_id, $family_id, $user['user_id']]);
+        U::log("SELECT at","SELECT pl.user_id FROM point_logs pl JOIN users u ON pl.user_id=u.user_id WHERE pl.log_id=$log_id AND u.family_id=$family_id AND u.user_id = $target_id",4);
+        $stmt->execute([$log_id, $family_id, $target_id]);
         $owner_id = (int)$stmt->fetchColumn();
         if ($owner_id > 0) {
-            $stmt = $db->prepare('DELETE FROM point_logs WHERE log_id=?');
-            $stmt->execute([$log_id]);
+          $stmt = $db->prepare('DELETE FROM point_logs WHERE log_id=?');
+          $stmt->execute([$log_id]);
         }
     }
 }
@@ -212,7 +214,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
       <div class="log-pt-earn">
         <?= h($log['point'] > 0 ? '+' : '-') ?><?= h(number_format(abs($log['point']),1)) ?>pt
         <?php if ($log['point'] > 0 || $is_parent): ?>
-        <a href="child_detail.php?id=<?= h($log['user_id']) ?>&action=delete&log_id=<?= h($log['log_id']) ?>" 
+        <a href="child_detail.php?user_id=<?= h($log['user_id']) ?>&action=delete&log_id=<?= h($log['log_id']) ?>" 
           class="ms-2" 
           onclick="return confirm('本当に削除しますか？');">
           <i class="bi bi-trash"></i>
