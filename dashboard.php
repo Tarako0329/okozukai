@@ -28,12 +28,12 @@ U::log("Fetching recent logs for family ID: $family_id, user ID: $uid");
 
 // 最近の履歴（家族全体）
 $stmt = $db->prepare(
-    'SELECT pl.*, u.display_name, u.avatar_color
+    "SELECT pl.*, u.display_name, u.avatar_color ,IF(pl.shounin_date IS NULL,'(未確認)','') AS shounin_status
      FROM point_logs pl
      JOIN users u ON u.user_id = pl.user_id
      WHERE pl.family_id = ? and pl.user_id like ?
      ORDER BY pl.created_at DESC
-     LIMIT 10'
+     LIMIT 10"
 );
 $stmt->execute([$family_id, $uid]);
 $recent_logs = $stmt->fetchAll();
@@ -329,12 +329,13 @@ body::before {
         </div>
         <div class="log-task d-flex"><?= h($log['task_name']) ?>
           <div class="log-meta pt-1 ps-3">
-            <?php if ($log['memo']): ?>  <?= h(mb_substr("メモ: " . $log['memo'],0,20,'UTF-8')) ?><?php endif; ?>
+            <?= h(mb_substr("(" . $log['display_name'].")",0,20,'UTF-8')) ?>
+            <?php if ($log['memo']): ?>  <?= h(mb_substr("　メモ: " . $log['memo'],0,20,'UTF-8')) ?><?php endif; ?>
           </div>
         </div>
       </div>
       <div class="log-point <?= h($log['log_type']) ?>">
-        <?= $log['point']>0 ? '+' : '-' ?><?= h(number_format(abs($log['point']),1)) ?>pt
+        <?= h($log['shounin_status']) ?> <?= $log['point']>0 ? ' +' : ' -' ?><?= h(number_format(abs($log['point']),1)) ?>pt
       </div>
     </div>
     <?php endforeach; ?>

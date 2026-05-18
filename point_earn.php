@@ -2,6 +2,7 @@
 // point_earn.php - 子供がお手伝いポイントを登録する
 require_once 'config.php';
 $user = require_login();
+U::log("\$user",$user,4);
 
 if ($user['role'] !== 'child') {
     header('Location: dashboard.php'); exit;
@@ -42,10 +43,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
         $stmt->execute([$family_id, $user['user_id'], $master_id, $master['task_name'], $point, $memo ?: null, $_POST['date'] ?? date('Y-m-d')]);
         $success = true;
+        //$db_c->SELECT("SELECT * FROM point_logs WHERE log_id = :log_id",["log_id" => $db->lastInsertId()]);
+        U::send_mail("green.green.midori@gmail.com","{$user['display_name']} がお手伝いしたよ",
+            "おてつだい「{$master['task_name']}」を{$point}ポイントで登録したよ！\nメモ: {$memo}\n\n
+            承認する：".ROOT_URL."/shounin.php?is_shounin=1&log_id=" . $db->lastInsertId()."\n
+            却下する：".ROOT_URL."/shounin.php?is_shounin=0&log_id=" . $db->lastInsertId() . "\n"
+            ,"お手伝いポイントアプリ");
     }
 }
 
-$my_points = get_user_points($db, (int)$user['user_id']);
+$my_points = get_user_points_all($db, (int)$user['user_id']);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -169,8 +176,8 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
 
   <?php if ($success): ?>
   <div class="alert-success-custom pop-anim">
-    🎉 ポイントをきろくしたよ！<br>
-    <span style="font-family:var(--font-h);font-size:1.5rem"><?= h(number_format($my_points, 1)) ?> pt</span> になったよ！
+    🎉 ポイントをきろくしたよ！<br>親が確認して"ＯＫ"だったら
+    <span style="font-family:var(--font-h);font-size:1.5rem"><?= h(number_format($my_points, 1)) ?> pt</span> になるよ！
     <div class="mt-2">
       <a href="point_earn.php" style="color:#2a7a4a;font-size:.9rem">もう1つ登録する</a>
       &nbsp;|&nbsp;

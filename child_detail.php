@@ -44,13 +44,13 @@ $page  = max(1, (int)($_GET['page'] ?? 1));
 $limit = 20;
 $offset = ($page - 1) * $limit;
 
-$stmt = $db->prepare('SELECT COUNT(*) FROM point_logs WHERE user_id=?');
+$stmt = $db->prepare('SELECT COUNT(*) FROM point_logs WHERE user_id=? and shounin_date IS NOT NULL');
 $stmt->execute([$target_id]);
 $total = (int)$stmt->fetchColumn();
 $pages = (int)ceil($total / $limit);
 
 $stmt = $db->prepare(
-    'SELECT * FROM point_logs WHERE user_id=? ORDER BY earn_at DESC LIMIT ? OFFSET ?'
+    'SELECT * FROM point_logs WHERE user_id=? AND shounin_date IS NOT NULL ORDER BY earn_at DESC LIMIT ? OFFSET ?'
 );
 $stmt->execute([$target_id, $limit, $offset]);
 $logs = $stmt->fetchAll();
@@ -60,7 +60,7 @@ $stmt = $db->prepare(
     'SELECT DATE_FORMAT(earn_at,"%Y-%m") AS ym,
             SUM(CASE WHEN log_type="earn" THEN point ELSE 0 END) AS earned,
             SUM(CASE WHEN log_type="redeem" THEN ABS(point) ELSE 0 END) AS redeemed
-     FROM point_logs WHERE user_id=?
+     FROM point_logs WHERE user_id=? AND shounin_date IS NOT NULL
      GROUP BY ym ORDER BY ym DESC LIMIT 6'
 );
 $stmt->execute([$target_id]);

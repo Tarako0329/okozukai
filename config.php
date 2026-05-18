@@ -142,11 +142,22 @@ function verify_csrf(): void {
  * ユーザーの現在ポイント合計を取得
  */
 function get_user_points(PDO $db, int $user_id): float {
-    $stmt = $db->prepare('SELECT COALESCE(SUM(point), 0) FROM point_logs WHERE user_id = ? AND log_type = "earn"');
+    $stmt = $db->prepare('SELECT COALESCE(SUM(point), 0) FROM point_logs WHERE user_id = ? AND log_type = "earn" AND shounin_date IS NOT NULL');
     $stmt->execute([$user_id]);
     $earn = (float)$stmt->fetchColumn();
 
-    $stmt = $db->prepare('SELECT COALESCE(SUM(ABS(point)), 0) FROM point_logs WHERE user_id = ? AND log_type = "redeem"');
+    $stmt = $db->prepare('SELECT COALESCE(SUM(ABS(point)), 0) FROM point_logs WHERE user_id = ? AND log_type = "redeem" AND shounin_date IS NOT NULL');
+    $stmt->execute([$user_id]);
+    $redeem = (float)$stmt->fetchColumn();
+
+    return $earn - $redeem;
+}
+function get_user_points_all(PDO $db, int $user_id): float {
+    $stmt = $db->prepare('SELECT COALESCE(SUM(point), 0) FROM point_logs WHERE user_id = ? AND log_type = "earn" ');
+    $stmt->execute([$user_id]);
+    $earn = (float)$stmt->fetchColumn();
+
+    $stmt = $db->prepare('SELECT COALESCE(SUM(ABS(point)), 0) FROM point_logs WHERE user_id = ? AND log_type = "redeem" ');
     $stmt->execute([$user_id]);
     $redeem = (float)$stmt->fetchColumn();
 
