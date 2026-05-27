@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $success = true;
         //$db_c->SELECT("SELECT * FROM point_logs WHERE log_id = :log_id",["log_id" => $db->lastInsertId()]);
         U::send_mail("green.green.midori@gmail.com","{$user['display_name']} がお手伝いしたよ",
-            "おてつだい「{$master['task_name']}」を{$point}ポイントで登録したよ！\nメモ: {$memo}\n\n
+            $_POST['date'] ."に おてつだい「{$master['task_name']} ({$point}ポイント)」をやったよ！\nメモ: {$memo}\n\n
             承認する：".ROOT_URL."/shounin.php?is_shounin=1&log_id=" . $db->lastInsertId()."\n
             却下する：".ROOT_URL."/shounin.php?is_shounin=0&log_id=" . $db->lastInsertId() . "\n"
             ,"お手伝いポイントアプリ");
@@ -231,7 +231,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
     <div class="washi-card">
       <div class="sec-title">📝 ポイントとメモ</div>
       <div class="mb-3">
-        <label class="form-label">⭐ 日付</label>
+        <label class="form-label">⭐ お手伝いした日</label>
         <input type="date" name="date" id="dateInput" class="form-control" value="<?= date('Y-m-d') ?>" required>
       </div>
       <div class="mb-3">
@@ -244,7 +244,12 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;
         <textarea name="memo" class="form-control" rows="2"
                   placeholder="どんなふうにしたか書いてね"></textarea>
       </div>
-      <button type="submit" class="btn-submit">✨ きろくする！</button>
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <div class="spinner-border text-success" style="display: none"; role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <span id="submitText">✨ きろくする！</span>
+      </button>
     </div>
   </form>
   <?php endif; ?>
@@ -261,6 +266,12 @@ function selectMaster(el) {
   // スクロール
   document.getElementById('pointInput').scrollIntoView({behavior:'smooth', block:'center'});
 }
+//#submitBtnの連続クリックを防止
+document.getElementById('earnForm').addEventListener('submit', function() {
+  document.getElementById('submitBtn').disabled = true;
+  document.getElementById('submitText').style.display = 'none';
+  document.querySelector('#submitBtn .spinner-border').style.display = 'inline-block';
+});
 </script>
 <script>
 	if ('serviceWorker' in navigator) {

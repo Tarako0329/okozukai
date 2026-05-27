@@ -39,8 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = '持っているポイントをこえています。';
     } else {
         $stmt = $db->prepare(
-            'INSERT INTO point_logs (family_id, user_id, master_id, task_name, point, memo, log_type, redeemed_by, redeemed_at)
-             VALUES (?, ?, NULL, "ポイント換金", ?, ?, "redeem", ?, NOW())'
+            'INSERT INTO point_logs (family_id, user_id, master_id, task_name, point, memo, log_type, redeemed_by, redeemed_at,shounin_date)
+             VALUES (?, ?, NULL, "ポイント換金", ?, ?, "redeem", ?, NOW(), NOW())'
         );
         $stmt->execute([$family_id, $target_user_id, -abs($redeem_point), $memo ?: null, $user['user_id']]);
 
